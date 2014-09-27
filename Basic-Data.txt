@@ -1,0 +1,55 @@
+≡BIOTOPES≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+===FRESHWATER===================================================================
+
+------NEOTROPICAL WHITEWATER----------------------------------------------------
+         pH          :  6.5 to  7.3 (must incl. temp variation in calc.)
+         Conductivity: 49.0 to 65.0 (uS/cm; 25°C) (must incl. temp variation in calc.)
+         Temperature : 76°F to 82°F (24.5°C to 27.7°C)
+         FISH        : Oscar (Astronotus ocellatus)
+                       Angelfish (Pterophyllum)
+         NOTES       : This is the archetypal "freshwater aquarium."  Most
+                       domestic freshqater aquaria can be kept in tanks
+                       fulfilling these specifications.  This could be
+                       considered a "default" freshwater setup.
+                       
+
+------NEOTROPICAL BLACKWATER----------------------------------------------------
+         pH          :  4.5 to  5.7 (must incl. temp variation in calc.)
+         Conductivity:  7.0 to 11.0 (uS/cm; 25°C) (must incl. temp variation in calc.)
+         Temperature : 76°F to 84°F (24.5°C to 28.8°C)
+         FISH        : Cardinal Tetra (Paracheirodon axelrodi)
+                       Discus (Symphysodon)
+         NOTES       : Slow-moving tributaries in subtropical and neotropical
+                       zones contain a large quantity of decomposing plant
+                       material that infuses the water with tannins and various
+                       other acidic organics.  This lends the water a dark,
+                       "tea-like" quality that is referred to as "blackwater"
+                       in aquatics.  The pH is typically lower, the conductivity
+                       is significantly lower, and the fish that live in these
+                       environments are specifically adapted to these
+                       conditions.
+
+===SALTWATER====================================================================
+------TROPICAL REEF-------------------------------------------------------------
+         pH          :    8.1 to    8.3 (must incl. temp variation in calc.)
+         Conductivity: 51,700 to 54,400 (uS/cm; 25°C) (must incl. temp variation in calc.)
+         Temperature :   78°F to 83°F (25.5°C to 28.3°C)
+         FISH        : Clownfish (Amphiprion)
+                       Damselfish (Pomacentrinae)
+         NOTES       : This is the standard "reef" aquarium, suitable for small
+                       "community" fish and invertebrates, including hard and
+                       soft corals and most anemones.
+
+------TROPICAL MARINE-----------------------------------------------------------
+         pH          :    8.0 to    8.3 (must incl. temp variation in calc.)
+         Conductivity: 51,700 to 54,400 (uS/cm; 25°C) (must incl. temp variation in calc.)
+         Temperature :   76°F to 83°F (24.5°C to 28.3°C)
+         FISH        : Lionfish (Pterois)
+                       Triggerfish (Balistidae)
+         NOTES       : Essentially, the conditions maintained in this type of
+                       aquarium are identical to those of the "reef" aquariums.
+                       The difference is, the fish listed in this category tend
+                       to be larger and more aggressive, and as such, these
+                       species need to be isolated from smaller fish and corals
+                       and other invertebrates in order to prevent predation.
