@@ -7,15 +7,15 @@
 
  public class WaterTypeClass
  {
- 	Vector<BiomeClass> biome;
- 	DataOutputStream dos;
-	FileOutputStream fos;
-	DataInputStream dis;
-	FileInputStream fis;
-	String wtcName;
-	File fileName;
-	String dir;
-	int numberOfBiomes;
+ 	public Vector<BiomeClass> biome;
+ 	public DataOutputStream dos;
+	public FileOutputStream fos;
+	public DataInputStream dis;
+	public FileInputStream fis;
+	public String wtcName;
+	public File fileName;
+	public String dir;
+	public int numberOfBiomes;
 //Variables---------------------------------------------------------
  	WaterTypeClass(String waterTypeName)
  	{

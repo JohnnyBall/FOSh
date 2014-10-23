@@ -7,19 +7,20 @@
 
  public class BiomeClass
  {
-	 	String biomeName;
- 		float fishTempMax;
-	 	float fishTempMin;
-	 	float fishSaltMax;
-	 	float fishSaltMin;
-	 	float fishPHMax;
-	 	float fishPHMin;
-	 	DataOutputStream dos;
-		FileOutputStream fos;
-		DataInputStream dis;
-		FileInputStream fis;
-		File fileName;
-		String dir;//Variables-------------------------------------------------
+	 	public String biomeName;
+ 		public float fishTempMax;
+	    public float fishTempMin;
+	 	public float fishSaltMax;
+	 	public float fishSaltMin;
+	 	public float fishPHMax;
+	 	public float fishPHMin;
+	 	public DataOutputStream dos;
+		public FileOutputStream fos;
+		public DataInputStream dis;
+		public FileInputStream fis;
+		public File fileName;
+		public String dir;//Variables-------------------------------------------------
+
 	 	BiomeClass(String nameOfBiome,String waterTypeOwner)
 	 	{
 			biomeName=nameOfBiome;
