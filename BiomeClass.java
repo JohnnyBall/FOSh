@@ -1,19 +1,15 @@
- import java.net.*;
  import java.util.*;
- import java.lang.Object.*;
- import javax.swing.*;
- import java.lang.Exception;
  import java.io.*;
 
  public class BiomeClass
  {
 	 	public String biomeName;
- 		public float fishTempMax;
-	    public float fishTempMin;
-	 	public float fishSaltMax;
-	 	public float fishSaltMin;
-	 	public float fishPHMax;
-	 	public float fishPHMin;
+ 		public double fishTempMax;
+	    public double fishTempMin;
+	 	public double fishSaltMax;
+	 	public double fishSaltMin;
+	 	public double fishPHMax;
+	 	public double fishPHMin;
 	 	public DataOutputStream dos;
 		public FileOutputStream fos;
 		public DataInputStream dis;
@@ -24,34 +20,30 @@
 	 	BiomeClass(String nameOfBiome,String waterTypeOwner)
 	 	{
 			biomeName=nameOfBiome;
-				fileName=new File(biomeName);
-				dir=fileName.getAbsolutePath();
-				dir+="\\"+waterTypeOwner;
-				fileName=new File(dir+"\\"+biomeName+".dat");
-
+			fileName=new File(biomeName+".dat");
 		}//End of BiomeClass()------------------------------------------------
-	 	void setTempMax(float tempMax)
+	 	void setTempMax(double tempMax)
 	 	{
 	 		fishTempMax=tempMax;
 	 	}
-	 	void setTempMin(float tempMin)
+	 	void setTempMin(double tempMin)
 	 	{
 	 		fishTempMin=tempMin;
 	 	}//SetTemp Classes end------------------------------------------------
 
-	 	void setPHMax(float phMax)
+	 	void setPHMax(double phMax)
 	 	{
 	 		fishPHMax=phMax;
 	 	}
-	 	void setPHMin(float phMin)
+	 	void setPHMin(double phMin)
 	 	{
 	 		fishPHMin=phMin;
 	 	}//SetPH Classes end--------------------------------------------------
-	 	void setSaltMax(float saltMax)
+	 	void setSaltMax(double saltMax)
 	 	{
 	 		fishSaltMax=saltMax;
 	 	}
-	 	void setSaltMin(float saltMin)
+	 	void setSaltMin(double saltMin)
 	 	{
 	 		fishSaltMin=saltMin;
 	 	}//SetSalt Classes end------------------------------------------------
@@ -60,22 +52,22 @@
 
 				fos=new FileOutputStream(fileName);
 				dos=new DataOutputStream(fos);
-				dos.writeFloat(fishTempMax);
-				dos.writeFloat(fishTempMin);
-				dos.writeFloat(fishPHMax);
-				dos.writeFloat(fishPHMin);
-				dos.writeFloat(fishSaltMax);
-				dos.writeFloat(fishSaltMin);
+				dos.writeDouble(fishTempMax);
+				dos.writeDouble(fishTempMin);
+				dos.writeDouble(fishPHMax);
+				dos.writeDouble(fishPHMin);
+				dos.writeDouble(fishSaltMax);
+				dos.writeDouble(fishSaltMin);
 		}//SaveBiome end------------------------------------------------------
 		void loadBiome() throws IOException
 		{
 				fis=new FileInputStream(fileName);
 				dis=new DataInputStream(fis);
-				fishTempMax=dis.readFloat();
-				fishTempMin=dis.readFloat();
-				fishPHMax=dis.readFloat();
-				fishPHMin=dis.readFloat();
-				fishSaltMax=dis.readFloat();
-				fishSaltMin=dis.readFloat();
+				fishTempMax=dis.readDouble();
+				fishTempMin=dis.readDouble();
+				fishPHMax=dis.readDouble();
+				fishPHMin=dis.readDouble();
+				fishSaltMax=dis.readDouble();
+				fishSaltMin=dis.readDouble();
 		}//LoadBiome end------------------------------------------------------
  }

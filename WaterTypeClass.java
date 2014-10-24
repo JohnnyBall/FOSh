@@ -1,9 +1,6 @@
- import java.net.*;
  import java.util.*;
- import java.lang.Object.*;
- import javax.swing.*;
- import java.lang.Exception;
  import java.io.*;
+
 
  public class WaterTypeClass
  {
@@ -20,34 +17,39 @@
  	WaterTypeClass(String waterTypeName)
  	{
 		wtcName=new String(waterTypeName);
-		fileName=new File(waterTypeName);
-		if(!fileName.exists())
-			fileName.mkdir();
-		dir=fileName.getAbsolutePath();
-		fileName=new File(dir+"\\"+waterTypeName+".dat");
+		fileName=new File(waterTypeName+".dat");
+		biome=new Vector<BiomeClass>();
 	}//End of WaterTypeClass()---------------------------------------
 
-	void setBiome(String biomeName)
+	void addBiome(BiomeClass biomeToAdd)
 	{
-		biome.add(new BiomeClass(biomeName,wtcName));
-	}//End of setBiome()---------------------------------------------
+		biome.addElement(biomeToAdd);
+		return;
+	}//End of addBiome()---------------------------------------------
 
 	void saveFile() throws IOException
 		{
 					fos=new FileOutputStream(fileName);
 					dos=new DataOutputStream(fos);
 					dos.writeInt(biome.size());
-						dos.writeInt(biome.size());
-						for(int i=0;i<biome.size();i++)
-							dos.writeUTF(biome.get(i).toString());
+							for(int i=0;i<biome.size();i++)
+							{
+								biome.get(i).saveBiome();
+								dos.writeUTF(biome.get(i).biomeName);
+							}
+					return;
 		}//End of saveFile()-----------------------------------------
-
 	void loadFile() throws IOException
 		{
 					fis=new FileInputStream(fileName);
 					dis=new DataInputStream(fis);
 					numberOfBiomes=dis.readInt();
 						for(int i=0;i<numberOfBiomes;i++)
-							biome.add(new BiomeClass(dis.readUTF(),wtcName));
+							{
+
+								biome.addElement(new BiomeClass(dis.readUTF(),wtcName));
+								biome.get(i).loadBiome();
+							}
+					return;
 		}//End of loadFile()-----------------------------------------
  }
