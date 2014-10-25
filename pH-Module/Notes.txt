@@ -1,0 +1,5 @@
+Known Issues:
+	Updating of the console during auto-adjust.  Will see if I can address the issue on 10/27/14
+
+Upcoming:
+	Manual setting of range to be added 10/29/14
