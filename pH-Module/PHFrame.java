@@ -133,7 +133,14 @@ public class PHFrame extends JFrame
             System.exit(1);
 
         else if(cmdBuffer.equals("CMD_ADJUST"))
-            console.addLine("Adjust...");
+        {
+            console.addLine("Adjusting range...");
+            pollTimer.stop();
+            new RangeDialog(this);
+            console.addLine("Range now set to " + minpH + " - " + maxpH);
+            pollTimer.start();
+
+        }
 
         else if(cmdBuffer.equals("CMD_INC"))
         {
