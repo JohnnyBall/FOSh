@@ -7,22 +7,47 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import javax.swing.*;
+import java.io.*;
+import java.util.*;
+
+
+
+//package WaterTypeClass<e>;
+/*
+I've got no strings
+To hold me down
+To make me fret, or make me frown
+I had strings
+But now I'm free
+There are no strings on me
+*/
 
 public class OSFrame extends JFrame
                           implements ActionListener
 {
-    private DCRSimpleTextConsole console;
-    private ImageIcon            iconGreen;
-    private ImageIcon            iconRed;
-    private JLabel               conditionLabeltemperature;
-    private JLabel               conditionLabelSalinity;
-    private JLabel               conditionLabelPH;
-    private JLabel               temperatureLabel;
-    private JLabel               salinityLabel;
-    private JLabel               phLabel;
+
+    public static void main(String[] args){new OSFrame();}// Launcher for OS FRAME
+
+    private WaterTypeClass<BiomeClass>       saltWater;
+    private WaterTypeClass<BiomeClass>       freshWater;
+    private BiomeClass                       selectedBiome;
+
+
+    private DCRSimpleTextConsole             console;
+    private ImageIcon                        iconGreen;
+    private ImageIcon                        iconRed;
+    private JLabel                           conditionLabeltemperature;
+    private JLabel                           conditionLabelSalinity;
+    private JLabel                           conditionLabelPH;
+    private JLabel                           temperatureLabel;
+    private JLabel                           salinityLabel;
+    private JLabel                           phLabel;
 
     OSFrame()
     {
+
+        try
+        {
         console                       = new DCRSimpleTextConsole(DCRSimpleTextConsole.INS_BEG);
 
         iconGreen                     = new ImageIcon("icon-green.png");
@@ -117,9 +142,16 @@ public class OSFrame extends JFrame
 
         getRootPane().setDefaultButton(exitButton);
         exitButton.requestFocus();
+
+        saltWater                     = new WaterTypeClass<BiomeClass>("Fresh Water");
+        freshWater                    = new WaterTypeClass<BiomeClass>("Salt Water");
+        saltWater.loadFile();
+        freshWater.loadFile();
+
         setJMenuBar(newMenuBar());
         this.setupFrame();
-
+        }
+        catch(IOException IOE){ console.addLine("Error Opening Biomes.");}
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
 
     @Override
@@ -131,12 +163,23 @@ public class OSFrame extends JFrame
                 break;
             case "CMD_EXIT":
                 System.exit(1);
-            case "CMD_ADJUST":
-                console.addLine("Adjust...");
+            case "Fresh_0":
+                selectedBiome = freshWater.elementAt(0);
+                console.addLine("Switched Biome to " +selectedBiome.biomeName);
                 break;
-            case "CMD_BIOME":
-                console.addLine("BIOME...");
+            case "Fresh_1":
+                selectedBiome = freshWater.elementAt(0);
+                console.addLine("Switched Biome to " +selectedBiome.biomeName);
                 break;
+            case "Salt_0":
+                selectedBiome = saltWater.elementAt(0);
+                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                break;
+            case "Salt_1":
+                selectedBiome = saltWater.elementAt(1);
+                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                break;
+
             default:
                 throw new UnsupportedOperationException("actionPerformed() in PrimaryFrame encountered an unrecognized Action Command.");
         }
@@ -155,17 +198,42 @@ public class OSFrame extends JFrame
     //MENUBAR SECTION FOR DISPLAYING THE MENU
     private JMenuBar newMenuBar()
     {
-        JMenuBar menuBar;
-        JMenu    subMenu;
+        Iterator<BiomeClass> it;
+        JMenuBar   menuBar;
+        JMenu      subMenu;
+        JMenu      tempMenu;
+        BiomeClass tempBiome;
+
+        int count = 0;
 
         menuBar = new JMenuBar();
         subMenu = new JMenu("Menu");
-        subMenu.add(newItem("Adjust","CMD_ADJUST",this,"Adjusts the settings."));
         subMenu.add(newItem("Exit","CMD_EXIT",this,"Closes the program."));
         menuBar.add(subMenu);
-        subMenu = new JMenu("Biome");
-        subMenu.add(newItem("Fresh Water","CMD_BIOME",this,"Fresh Water Biome settings"));
-        subMenu.add(newItem("Salt Water","CMD_BIOME",this,"Salt Water Biome settings"));
+        subMenu = new JMenu("Water Menu");
+
+        tempMenu = new JMenu("Fresh Water");
+        subMenu.add(tempMenu);
+
+        it  = freshWater.listIterator();
+        while(it.hasNext())
+        {
+            tempBiome = it.next();
+            tempMenu.add(newItem(tempBiome.biomeName,"Fresh_"+count,this,"Selects "+tempBiome.biomeName+" biome..."));
+            count++;
+        }
+        count = 0;
+
+        tempMenu = new JMenu("Salt Water");
+        subMenu.add(tempMenu);
+
+        it  = saltWater.listIterator();
+        while(it.hasNext())
+        {
+           tempBiome = it.next();
+           tempMenu.add(newItem(tempBiome.biomeName,"Salt_"+count,this,"Selects "+tempBiome.biomeName+" biome..."));
+           count++;
+        }
         menuBar.add(subMenu);
 
         return menuBar;
