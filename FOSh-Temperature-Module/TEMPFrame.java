@@ -12,9 +12,12 @@ import javax.swing.Timer;
 import java.text.*;
 import java.math.*;
 
-public class OSFrame extends JFrame
+public class TEMPFrame extends JFrame
                           implements ActionListener
 {
+     public static void main(String[] args){new TEMPFrame();}// Launcher for OS FRAME
+
+    private TEMPCTOS             ctos;
     private DCRSimpleTextConsole console;
     private ImageIcon            iconGreen;
     private ImageIcon            iconRed;
@@ -26,7 +29,8 @@ public class OSFrame extends JFrame
     public  Random               ran;
     public  Timer                randomGen;
     public  DecimalFormat        df;
-    OSFrame()
+
+    TEMPFrame()
     {
         console                       = new DCRSimpleTextConsole(DCRSimpleTextConsole.INS_BEG);
 
@@ -40,7 +44,7 @@ public class OSFrame extends JFrame
         tempMin                       = new Float(70);
         ran                           = new Random(1645);
         randomGen                     = new Timer(10000, this);
-        
+
         temperatureLabel              = new JLabel(Float.toString(randomNum));
 
         JButton adjustButton          = new JButton("Manually Adjust Settings");
@@ -81,7 +85,7 @@ public class OSFrame extends JFrame
 
         this.add(topPanel, BorderLayout.NORTH);
 
-        
+
         centerSubPanel2.add(new JScrollPane(console));
 
         centerPanel.add(centerSubPanel2);
@@ -107,7 +111,29 @@ public class OSFrame extends JFrame
         exitButton.requestFocus();
         this.setupFrame();
 
+        ctos = new TEMPCTOS("127.0.0.1",12345,"Temp_Mod",this);
+
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
+
+
+
+
+
+    void connected()
+    {
+       conditionLabeltemperature = new JLabel(iconGreen);
+       this.repaint();
+       console.addLine("Connected to OS module.");
+    }
+
+
+
+
+
+
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -128,10 +154,6 @@ public class OSFrame extends JFrame
                 randomNum = ran.nextFloat()*(tempMax - tempMin) + 70;
                 temperatureLabel.setText(df.format(randomNum));
                 console.addLine("New Temperature Reading: " + df.format(randomNum));
-                if(randomNum < tempMax && randomNum > tempMin)
-                    conditionLabeltemperature.setIcon(iconGreen);
-                else
-                    conditionLabeltemperature.setIcon(iconRed);
                 break;
             default:
                 throw new UnsupportedOperationException("actionPerformed() in PrimaryFrame encountered an unrecognized Action Command.");

@@ -9,6 +9,7 @@ import java.text.NumberFormat;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+import java.net.*;
 
 
 
@@ -26,11 +27,22 @@ public class OSFrame extends JFrame
                           implements ActionListener
 {
 
-    public static void main(String[] args){new OSFrame();}// Launcher for OS FRAME
+    public static void main(String[] args)
+    {
+        OSFrame osMod = new OSFrame();
+        osMod.accept();
+    }// Launcher for OS FRAME
 
     private WaterTypeClass<BiomeClass>       saltWater;
     private WaterTypeClass<BiomeClass>       freshWater;
     private BiomeClass                       selectedBiome;
+    private Talker                           talker;
+
+    private ServerSocket                     serverSocket;
+    private CTM                              tempCTM;
+    private CTM                              salCTM;
+    private CTM                              phCTM;
+
 
 
     private DCRSimpleTextConsole             console;
@@ -60,12 +72,7 @@ public class OSFrame extends JFrame
         salinityLabel                 = new JLabel("SALINITY_HERE");
         phLabel                       = new JLabel("PH_HERE");
 
-        JButton adjustButton          = new JButton("Manually Adjust Settings");
         JButton exitButton            = new JButton("Close");
-
-        JPanel  topSubPanel1          = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel  topSubPanel2          = new JPanel(new FlowLayout());
-        JPanel  topPanel              = new JPanel(new GridLayout(1, 2));
 
         JPanel  centerSubPanel1       = new JPanel();
         JPanel  centerSubPanel1a      = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -86,15 +93,6 @@ public class OSFrame extends JFrame
         JLabel salinityLabelHeader    = new JLabel("Current System Salinity:");
         JLabel phLabelHeader          = new JLabel("Current System PH:");
 
-        adjustButton.setActionCommand("CMD_ADJUST");
-        adjustButton.addActionListener(this);
-
-        topSubPanel2.add(adjustButton);
-        topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Probe Data"));
-        topPanel.add(topSubPanel1);
-        topPanel.add(topSubPanel2);
-
-        this.add(topPanel, BorderLayout.NORTH);
 
         temperatureLabelHeader.setPreferredSize(new Dimension(256, 18));
         centerSubPanel1b.add(temperatureLabelHeader);
@@ -145,14 +143,97 @@ public class OSFrame extends JFrame
 
         saltWater                     = new WaterTypeClass<BiomeClass>("Fresh Water");
         freshWater                    = new WaterTypeClass<BiomeClass>("Salt Water");
+        serverSocket                  = new ServerSocket(12345);
+
         saltWater.loadFile();
         freshWater.loadFile();
 
         setJMenuBar(newMenuBar());
         this.setupFrame();
-        }
+        }//end of first try
         catch(IOException IOE){ console.addLine("Error Opening Biomes.");}
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
+
+
+
+
+
+    void accept()
+    {
+        Socket socket;
+        CTM    ctm;
+        while(true)
+        {
+          try
+          {
+            socket  = serverSocket.accept();
+            ctm = new CTM(socket,"ctm",this);
+            ctm.sendMessage("+WHORU");
+          }
+          catch(IOException ioe)
+          {
+            System.out.println("Error with constructing the socket in .accept()");
+            ioe.printStackTrace();
+          }
+        }
+    }//-[END OF ACCEPT]----------------------------------------------------
+
+    void connectTemp(CTM temperaryCTM)
+    {
+       tempCTM                   = temperaryCTM;
+       conditionLabeltemperature = new JLabel(iconGreen);
+       console.addLine("Temperature module connected.");
+       this.repaint();
+       tempCTM.sendMessage("+CONNECTED");
+       tempCTM.sendMessage("+REQ_TEMP");
+    }
+
+    void connectSal(CTM temperaryCTM)
+    {
+       salCTM                 = temperaryCTM;
+       conditionLabelSalinity = new JLabel(iconGreen);
+       console.addLine("Salinity module connected.");
+       this.repaint();
+       salCTM.sendMessage("+CONNECTED");
+       salCTM.sendMessage("+REQ_SAL");
+    }
+
+    void connectPH(CTM temperaryCTM)
+    {
+       phCTM            = temperaryCTM;
+       conditionLabelPH = new JLabel(iconGreen);
+       console.addLine("PH module connected.");
+       this.repaint();
+       phCTM.sendMessage("+CONNECTED");
+       phCTM.sendMessage("+REQ_PH");
+    }
+
+    void disconnectMod(String id)
+    {
+        if(id == "TEMP_MOD")
+        {
+          conditionLabeltemperature = new JLabel(iconRed);
+          console.addLine("Temperature module disconnected.");
+          tempCTM = null;
+        }
+        else if(id == "SALINITY_MOD")
+        {
+          conditionLabelSalinity = new JLabel(iconRed);
+          console.addLine("Salinity module disconnected.");
+          tempCTM = null;
+        }
+        else if(id == "PH_MOD")
+        {
+          conditionLabelPH = new JLabel(iconRed);
+          console.addLine("PH module disconnected.");
+          tempCTM = null;
+        }
+
+    }
+
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -184,6 +265,108 @@ public class OSFrame extends JFrame
                 throw new UnsupportedOperationException("actionPerformed() in PrimaryFrame encountered an unrecognized Action Command.");
         }
     }//-[END METHOD actionPerformed]---------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void setupFrame()
     {
