@@ -269,12 +269,6 @@ public class OSFrame extends JFrame
 
 
 
-
-
-
-
-
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -287,23 +281,23 @@ public class OSFrame extends JFrame
             case "Fresh_0":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
 
                 break;
             case "Fresh_1":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 break;
             case "Salt_0":
                 selectedBiome = saltWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 break;
             case "Salt_1":
                 selectedBiome = saltWater.elementAt(1);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 break;
 
             default:

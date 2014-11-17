@@ -5,7 +5,7 @@ import java.lang.*;
 import java.util.*;
 import javax.swing.*;
 
-public class TEMPCTOS
+public class SALCTOS
                 implements Runnable
 {
   Talker  talker;
@@ -14,7 +14,7 @@ public class TEMPCTOS
   String[] splitString;// see above.
   String id;
 //====================================================================================================================
-  public TEMPCTOS(String serverName,int port,String id, TEMPFrame tf)
+  public SALCTOS(String serverName,int port,String id, TEMPFrame tf)
   {   try
       {
         this.id = id;
@@ -55,7 +55,7 @@ public class TEMPCTOS
            msg = talker.recieve();
            if(msg.startsWith("+WHORU"))
            {
-             this.sendMessage("+IAMA TEMP_MOD");
+             this.sendMessage("+IAMA SALINITY_MOD");
            }
            else if(msg.startsWith("+CONNECTED"))
            {
@@ -67,7 +67,6 @@ public class TEMPCTOS
               System.out.println("splitString[1]: "+splitString[1]);
               System.out.println("splitString[1]: "+splitString[2]);
               tf.setMinMax(splitString[1],splitString[2]);
-
            }
         }
         talker.close();// CLOSES CONNECTION TO TALKER IF  NOT CONNECTED!!
