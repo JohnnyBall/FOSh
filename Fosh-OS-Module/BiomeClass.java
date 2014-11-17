@@ -4,7 +4,6 @@ import java.io.*;
 public class BiomeClass
 {
 	public String 			biomeName;
-    //public String           note;
  	public double 			fishTempMax;
 	public double 			fishTempMin;
 	public double 			fishPHMax;
@@ -22,7 +21,7 @@ public class BiomeClass
     @Override
     public String toString()
     {
-        return biomeName +" "+" "+fishTempMax+" "+fishTempMin+" "+fishPHMax+" "+fishPHMin+" "+fishSaltMax+" "+fishSaltMin;
+        return biomeName +" "+fishTempMax+" "+fishTempMin+" "+fishPHMax+" "+fishPHMin+" "+fishSaltMax+" "+fishSaltMin;
     }//End of BiomeClass()-----------------------------------------------
     BiomeClass(DataInputStream dis) throws IOException
     {

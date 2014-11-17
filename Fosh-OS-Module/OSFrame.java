@@ -6,10 +6,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
 import java.net.*;
+import java.math.*;
+
 
 
 
@@ -30,8 +33,15 @@ public class OSFrame extends JFrame
     public static void main(String[] args)
     {
         OSFrame osMod = new OSFrame();
-        osMod.accept();
+        System.out.println("I've got no strings");
+		System.out.println("To hold me down");
+		System.out.println("To make me fret, or make me frown");
+		System.out.println("I had strings");
+		System.out.println("But now I'm free");
+		System.out.println("There are no strings on me");
+		System.out.println("");
         System.out.println("IAMTHESERVER!");
+        osMod.accept();
     }// Launcher for OS FRAME
 
     private WaterTypeClass<BiomeClass>       saltWater;
@@ -55,6 +65,7 @@ public class OSFrame extends JFrame
     private JLabel                           temperatureLabel;
     private JLabel                           salinityLabel;
     private JLabel                           phLabel;
+    public  DecimalFormat                    df;
 
     OSFrame()
     {
@@ -95,6 +106,11 @@ public class OSFrame extends JFrame
         JLabel phLabelHeader          = new JLabel("Current System PH:");
 
 
+
+        df = new DecimalFormat("##.##");
+        df.setRoundingMode(RoundingMode.DOWN);
+
+
         temperatureLabelHeader.setPreferredSize(new Dimension(256, 18));
         centerSubPanel1b.add(temperatureLabelHeader);
         centerSubPanel1b.add(temperatureLabel);
@@ -113,7 +129,6 @@ public class OSFrame extends JFrame
         centerSubPanel1.add(centerSubPanel1b);
         centerSubPanel1.add(centerSubPanel1c);
         centerSubPanel1.add(centerSubPanel1d);
-
 
         centerSubPanel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Console"));
         centerSubPanel2.add(new JScrollPane(console));
@@ -149,6 +164,8 @@ public class OSFrame extends JFrame
         saltWater.loadFile();
         freshWater.loadFile();
 
+        selectedBiome=saltWater.get(1);
+
         setJMenuBar(newMenuBar());
         this.setupFrame();
         }//end of first try
@@ -181,31 +198,36 @@ public class OSFrame extends JFrame
 
     void connectTemp(CTM temperaryCTM)
     {
-       tempCTM                   = temperaryCTM;
+       tempCTM = temperaryCTM;
        conditionLabeltemperature.setIcon(iconGreen);
        console.addLine("Temperature module connected.");
        this.repaint();
        tempCTM.sendMessage("+CONNECTED");
-       tempCTM.sendMessage("+REQ_TEMP");
+       tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
     }
 
     void connectSal(CTM temperaryCTM)
     {
-       salCTM                 = temperaryCTM;
+       salCTM = temperaryCTM;
        conditionLabelSalinity.setIcon(iconGreen);
        console.addLine("Salinity module connected.");
        this.repaint();
        salCTM.sendMessage("+CONNECTED");
+       tempCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
+       if(tempCTM!=null)
+         tempCTM.sendMessage("TEMP+ "+temperatureLabel.getText());
+
        salCTM.sendMessage("+REQ_SAL");
     }
 
     void connectPH(CTM temperaryCTM)
     {
-       phCTM            = temperaryCTM;
+       phCTM = temperaryCTM;
        conditionLabelPH.setIcon(iconGreen);
        console.addLine("PH module connected.");
        this.repaint();
        phCTM.sendMessage("+CONNECTED");
+       tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
        phCTM.sendMessage("+REQ_PH");
     }
 
@@ -214,27 +236,40 @@ public class OSFrame extends JFrame
         System.out.println("Disconnecting " +id);
         if(id.equals("TEMP_MOD"))
         {
-          System.out.println("if " +id);
           conditionLabeltemperature.setIcon(iconRed);
           console.addLine("Temperature module disconnected.");
           tempCTM = null;
         }
         else if(id.equals("SALINITY_MOD"))
         {
-          System.out.println("if " +id);
           conditionLabelSalinity.setIcon(iconRed);
           console.addLine("Salinity module disconnected.");
           tempCTM = null;
         }
         else if(id.equals("PH_MOD"))
         {
-          System.out.println("if " +id);
           conditionLabelPH.setIcon(iconRed);
           console.addLine("PH module disconnected.");
           tempCTM = null;
         }
 
     }
+
+    void updateTemp(String temp)
+    {
+        System.out.println("Temp: "+temp);
+        temperatureLabel.setText(df.format(Double.parseDouble(temp)));
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -252,117 +287,29 @@ public class OSFrame extends JFrame
             case "Fresh_0":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+
                 break;
             case "Fresh_1":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
                 break;
             case "Salt_0":
                 selectedBiome = saltWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
                 break;
             case "Salt_1":
                 selectedBiome = saltWater.elementAt(1);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
                 break;
 
             default:
                 throw new UnsupportedOperationException("actionPerformed() in PrimaryFrame encountered an unrecognized Action Command.");
         }
     }//-[END METHOD actionPerformed]---------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

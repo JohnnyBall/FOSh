@@ -80,8 +80,12 @@ public class CTM
             this.setID(splitString[1]);
             server.connectPH(this);
           }
-
         }//END OF IAMA check
+        else if(msg.startsWith("+UPTEMP "))
+        {
+          splitString = msg.toString().split(" ");
+          server.updateTemp(splitString[1]);
+        }
 
       }//end of try
       catch(IOException ioe)

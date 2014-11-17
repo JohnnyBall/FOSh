@@ -23,10 +23,12 @@ public class TEMPFrame extends JFrame
     private ImageIcon            iconRed;
     private JLabel               conditionLabeltemperature;
     private JLabel               temperatureLabel;
-    public  Float                randomNum;
-    public  Float                tempMax;
-    public  Float                tempMin;
+
+    public  Double               randomNum;
+    public  Double               tempMax;
+    public  Double               tempMin;
     public  Random               ran;
+
     public  Timer                randomGen;
     public  DecimalFormat        df;
 
@@ -39,13 +41,13 @@ public class TEMPFrame extends JFrame
 
         conditionLabeltemperature     = new JLabel(iconRed);
 
-        randomNum                     = new Float(70);
-        tempMax                       = new Float(80);
-        tempMin                       = new Float(70);
+        randomNum                     = new Double(70);
+        tempMax                       = new Double(80);
+        tempMin                       = new Double(70);
         ran                           = new Random(1645);
         randomGen                     = new Timer(10000, this);
 
-        temperatureLabel              = new JLabel(Float.toString(randomNum));
+        temperatureLabel              = new JLabel(Double.toString(randomNum));
 
         JButton adjustButton          = new JButton("Manually Adjust Settings");
         JButton exitButton            = new JButton("Close");
@@ -117,8 +119,6 @@ public class TEMPFrame extends JFrame
 
 
 
-
-
     void connected()
     {
        conditionLabeltemperature.setIcon(iconGreen);
@@ -126,14 +126,12 @@ public class TEMPFrame extends JFrame
        console.addLine("Connected to OS module.");
     }
 
-
-
-
-
-
-
-
-
+    void setMinMax(String min,String max)
+    {
+      console.addLine("New Min and Max temperatures set! They are: Min:"+min+" Max:"+max);
+      tempMax = Double.parseDouble(max);
+      tempMin = Double.parseDouble(min);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -152,6 +150,7 @@ public class TEMPFrame extends JFrame
                 break;
             case "TIMER_FIRE":
                 randomNum = ran.nextFloat()*(tempMax - tempMin) + 70;
+                ctos.sendMessage("+UPTEMP "+randomNum);
                 temperatureLabel.setText(df.format(randomNum));
                 console.addLine("New Temperature Reading: " + df.format(randomNum));
                 break;
@@ -166,8 +165,7 @@ public class TEMPFrame extends JFrame
         this.setLocationRelativeTo(null);
         this.setTitle("FOSh Temperature Module");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setVisible(true);
     }//-[END METHOD setupFrame]--------------------------------------------------
-
 }//end of class
