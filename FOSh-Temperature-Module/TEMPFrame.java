@@ -15,7 +15,7 @@ import java.math.*;
 public class TEMPFrame extends JFrame
                           implements ActionListener
 {
-     public static void main(String[] args){new TEMPFrame();}// Launcher for OS FRAME
+     public static void main(String[] args){new TEMPFrame();System.out.println("IAMTHETEMPMODULE!");}// Launcher for OS FRAME
 
     private TEMPCTOS             ctos;
     private DCRSimpleTextConsole console;
@@ -121,7 +121,7 @@ public class TEMPFrame extends JFrame
 
     void connected()
     {
-       conditionLabeltemperature = new JLabel(iconGreen);
+       conditionLabeltemperature.setIcon(iconGreen);
        this.repaint();
        console.addLine("Connected to OS module.");
     }

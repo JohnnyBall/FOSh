@@ -31,6 +31,7 @@ public class OSFrame extends JFrame
     {
         OSFrame osMod = new OSFrame();
         osMod.accept();
+        System.out.println("IAMTHESERVER!");
     }// Launcher for OS FRAME
 
     private WaterTypeClass<BiomeClass>       saltWater;
@@ -181,7 +182,7 @@ public class OSFrame extends JFrame
     void connectTemp(CTM temperaryCTM)
     {
        tempCTM                   = temperaryCTM;
-       conditionLabeltemperature = new JLabel(iconGreen);
+       conditionLabeltemperature.setIcon(iconGreen);
        console.addLine("Temperature module connected.");
        this.repaint();
        tempCTM.sendMessage("+CONNECTED");
@@ -191,7 +192,7 @@ public class OSFrame extends JFrame
     void connectSal(CTM temperaryCTM)
     {
        salCTM                 = temperaryCTM;
-       conditionLabelSalinity = new JLabel(iconGreen);
+       conditionLabelSalinity.setIcon(iconGreen);
        console.addLine("Salinity module connected.");
        this.repaint();
        salCTM.sendMessage("+CONNECTED");
@@ -201,7 +202,7 @@ public class OSFrame extends JFrame
     void connectPH(CTM temperaryCTM)
     {
        phCTM            = temperaryCTM;
-       conditionLabelPH = new JLabel(iconGreen);
+       conditionLabelPH.setIcon(iconGreen);
        console.addLine("PH module connected.");
        this.repaint();
        phCTM.sendMessage("+CONNECTED");
@@ -210,21 +211,25 @@ public class OSFrame extends JFrame
 
     void disconnectMod(String id)
     {
-        if(id == "TEMP_MOD")
+        System.out.println("Disconnecting " +id);
+        if(id.equals("TEMP_MOD"))
         {
-          conditionLabeltemperature = new JLabel(iconRed);
+          System.out.println("if " +id);
+          conditionLabeltemperature.setIcon(iconRed);
           console.addLine("Temperature module disconnected.");
           tempCTM = null;
         }
-        else if(id == "SALINITY_MOD")
+        else if(id.equals("SALINITY_MOD"))
         {
-          conditionLabelSalinity = new JLabel(iconRed);
+          System.out.println("if " +id);
+          conditionLabelSalinity.setIcon(iconRed);
           console.addLine("Salinity module disconnected.");
           tempCTM = null;
         }
-        else if(id == "PH_MOD")
+        else if(id.equals("PH_MOD"))
         {
-          conditionLabelPH = new JLabel(iconRed);
+          System.out.println("if " +id);
+          conditionLabelPH.setIcon(iconRed);
           console.addLine("PH module disconnected.");
           tempCTM = null;
         }
