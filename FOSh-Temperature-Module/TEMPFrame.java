@@ -149,7 +149,7 @@ public class TEMPFrame extends JFrame
                 console.addLine("BIOME...");
                 break;
             case "TIMER_FIRE":
-                randomNum = ran.nextFloat()*(tempMax - tempMin) + 70;
+                randomNum = tempMin + ran.nextFloat() * ((tempMax) - tempMin);
                 ctos.sendMessage("+UPTEMP "+randomNum);
                 temperatureLabel.setText(df.format(randomNum));
                 console.addLine("New Temperature Reading: " + df.format(randomNum));
