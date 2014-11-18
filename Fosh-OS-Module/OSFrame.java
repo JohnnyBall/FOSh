@@ -289,6 +289,8 @@ public class OSFrame extends JFrame
                   tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                if(salCTM != null)
+                    salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
 
                 break;
             case "Fresh_1":
@@ -298,6 +300,8 @@ public class OSFrame extends JFrame
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                  if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                 if(salCTM != null)
+                    salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
 
                 break;
             case "Salt_0":
@@ -307,6 +311,8 @@ public class OSFrame extends JFrame
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                if(salCTM != null)
+                    salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
 
                 break;
             case "Salt_1":
@@ -316,6 +322,8 @@ public class OSFrame extends JFrame
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+                if(salCTM != null)
+                    salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
 
                 break;
 

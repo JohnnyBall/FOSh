@@ -42,6 +42,7 @@ public class PrimaryFrame extends JFrame
     private double                      curSalinity;
     private ImageIcon                   iconGreen;
     private ImageIcon                   iconRed;
+    private FOShSalinityModule.SALCTOS  ctos;
 
     private int                         curConductivity;
 
@@ -72,8 +73,24 @@ public class PrimaryFrame extends JFrame
         readConductivityProbe();
         updateLabels();
         setupTimer();
+        ctos = new SALCTOS("127.0.0.1",12345,"Temp_Mod",this);
     }
     //-[END CONSTRUCTOR(S)]-----------------------------------------------------
+
+    void connected()
+    {
+       conditionLabel.setIcon(iconGreen);
+       this.repaint();
+       console.addLine("Connected to OS module.");
+    }
+
+    void setMinMax(String min,String max)
+    {
+      console.addLine("New Min and Max Conductivity set! They are: Min:"+min+" Max:"+max);
+      maxConductivity = (int)Double.parseDouble(max);
+      minConductivity = (int)Double.parseDouble(min);
+    }
+
 
     //-[BEGIN METHOD actionPerformed]-------------------------------------------
     @Override
@@ -420,6 +437,7 @@ public class PrimaryFrame extends JFrame
     private void updateLabels()
     {
         NumberFormat nf = NumberFormat.getIntegerInstance();
+        ctos.sendMessage("+UPSAL "+curConductivity);
         conductivityLabelT.setText(nf.format(curConductivity) + " μS/cm");
         conductivityLabelC.setText(nf.format(curConductivity) + " μS/cm");
         temperatureLabel.setText(nf.format(curTemperature) + "° C");
