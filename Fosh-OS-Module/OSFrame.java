@@ -34,12 +34,12 @@ public class OSFrame extends JFrame
     {
         OSFrame osMod = new OSFrame();
         System.out.println("I've got no strings");
-		System.out.println("To hold me down");
-		System.out.println("To make me fret, or make me frown");
-		System.out.println("I had strings");
-		System.out.println("But now I'm free");
-		System.out.println("There are no strings on me");
-		System.out.println("");
+        System.out.println("To hold me down");
+        System.out.println("To make me fret, or make me frown");
+        System.out.println("I had strings");
+        System.out.println("But now I'm free");
+        System.out.println("There are no strings on me");
+        System.out.println("");
         System.out.println("IAMTHESERVER!");
         osMod.accept();
     }// Launcher for OS FRAME
@@ -213,7 +213,7 @@ public class OSFrame extends JFrame
        console.addLine("Salinity module connected.");
        this.repaint();
        salCTM.sendMessage("+CONNECTED");
-       tempCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
+       phCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
        if(tempCTM!=null)
          tempCTM.sendMessage("TEMP+ "+temperatureLabel.getText());
 
@@ -227,7 +227,7 @@ public class OSFrame extends JFrame
        console.addLine("PH module connected.");
        this.repaint();
        phCTM.sendMessage("+CONNECTED");
-       tempCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+       phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
        phCTM.sendMessage("+REQ_PH");
     }
 
@@ -260,12 +260,16 @@ public class OSFrame extends JFrame
         System.out.println("Temp: "+temp);
         temperatureLabel.setText(df.format(Double.parseDouble(temp)));
     }
-
-
-
-
-
-
+    void updatePH(String ph)
+    {
+        System.out.println("PH: "+ph);
+        phLabel.setText(df.format(Double.parseDouble(ph)));
+    }
+    void updateSAL(String sal)
+    {
+        System.out.println("sal: "+sal);
+        salinityLabel.setText(df.format(Double.parseDouble(sal)));
+    }
 
 
 
@@ -281,23 +285,38 @@ public class OSFrame extends JFrame
             case "Fresh_0":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(tempCTM != null)
+                  tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(phCTM != null)
+                    phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
 
                 break;
             case "Fresh_1":
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(tempCTM != null)
+                    tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                 if(phCTM != null)
+                    phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+
                 break;
             case "Salt_0":
                 selectedBiome = saltWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(tempCTM != null)
+                    tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(phCTM != null)
+                    phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+
                 break;
             case "Salt_1":
                 selectedBiome = saltWater.elementAt(1);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
-                tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(tempCTM != null)
+                    tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                if(phCTM != null)
+                    phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
+
                 break;
 
             default:

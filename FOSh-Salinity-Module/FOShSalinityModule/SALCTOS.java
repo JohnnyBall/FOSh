@@ -9,17 +9,17 @@ public class SALCTOS
                 implements Runnable
 {
   Talker  talker;
-  TEMPFrame tf;
+  PrimaryFrame sf;
   String  msg;// Must be placed here to pass to chat client, other wise must be effectivly final.
   String[] splitString;// see above.
   String id;
 //====================================================================================================================
-  public SALCTOS(String serverName,int port,String id, TEMPFrame tf)
+  public SALCTOS(String serverName,int port,String id, PrimaryFrame sf)
   {   try
       {
         this.id = id;
         talker  = new Talker(serverName,port,id);
-        this.tf = tf;
+        this.sf = sf;
         new Thread(this).start();
       }
       catch(IOException ioe)
@@ -59,14 +59,14 @@ public class SALCTOS
            }
            else if(msg.startsWith("+CONNECTED"))
            {
-            tf.connected();
+            sf.connected();
            }
            else if(msg.startsWith("+MINMAX"))
            {
               splitString = msg.toString().split(" ");
               System.out.println("splitString[1]: "+splitString[1]);
               System.out.println("splitString[1]: "+splitString[2]);
-              tf.setMinMax(splitString[1],splitString[2]);
+              sf.setMinMax(splitString[1],splitString[2]);
            }
         }
         talker.close();// CLOSES CONNECTION TO TALKER IF  NOT CONNECTED!!

@@ -35,16 +35,19 @@ public class PrimaryFrame extends JFrame
 {
     //-[BEGIN MEMBER DATA]------------------------------------------------------
     private static final int RANDOM_LIMIT = 1000;
-    
+
     private FOShSalinityModule.DCRSimpleTextConsole     console;
     private FOShSalinityModule.AdjustmentDialog         dialog;
-    
+
     private double                      curSalinity;
     private ImageIcon                   iconGreen;
     private ImageIcon                   iconRed;
+
     private int                         curConductivity;
+
     private int                         minConductivity;
     private int                         maxConductivity;
+
     private int                         curTemperature;
     private JLabel                      conditionLabel;
     private JLabel                      conductivityLabelT;
@@ -55,13 +58,13 @@ public class PrimaryFrame extends JFrame
     private long                        timeElapsed;
     private Timer                       timer;
     //-[END MEMBER DATA]--------------------------------------------------------
-    
+
     //-[BEGIN CONSTRUCTOR(S)]---------------------------------------------------
     PrimaryFrame()
     {
         console = new FOShSalinityModule.DCRSimpleTextConsole(
             FOShSalinityModule.DCRSimpleTextConsole.INS_BEG);
-        
+
         setupGUI();
         setupFrame();
         requestConductivityLimits();
@@ -71,13 +74,13 @@ public class PrimaryFrame extends JFrame
         setupTimer();
     }
     //-[END CONSTRUCTOR(S)]-----------------------------------------------------
-    
+
     //-[BEGIN METHOD actionPerformed]-------------------------------------------
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String cmd = e.getActionCommand();
-        
+
         switch(cmd)
         {
             case "CMD_NULL":
@@ -97,19 +100,19 @@ public class PrimaryFrame extends JFrame
         }
     }
     //-[END METHOD actionPerformed]---------------------------------------------
-    
+
     //-[BEGIN METHOD calculatePracticalSalinity]--------------------------------
     private void calculatePracticalSalinity()
     {
         // Candy
         console.addLine("Calculating practical salinity...");
-        
+
         /*  Oh boy, here we go...  */
-        
+
         double ckcl;    // Conductivity of KCl solution @ curTemperature
         double rt;      // Conductivity ratio between sample and KCl
         double deltaS;
-        
+
         // CONSTANTS:
         double a0 = 0.0080;
         double a1 = -0.1692;
@@ -127,30 +130,30 @@ public class PrimaryFrame extends JFrame
         double c1 = 4.6636947;
         double c2 = 861.3027640;
         double c3 = 29035.1640851;
-        
+
         // Calculate conductivity C(KCL soln. @ curTemperature)
-        ckcl = c0 * Math.pow(curTemperature, 3) 
+        ckcl = c0 * Math.pow(curTemperature, 3)
             + c1 * Math.pow(curTemperature, 2) + c2 * curTemperature + c3;
-        
+
         // Calculate conductivity ratio
         rt = curConductivity / ckcl;
-        
+
         // Calculate deltaS
         deltaS = ((curTemperature - 15) / (1 + 0.0162 * (curTemperature - 15)))
             * (b0 + b1 * Math.pow(rt, 1/2) + b2 * rt + b3 * Math.pow(rt, 3/2)
             + b4 * Math.pow(rt, 2) + b5 * Math.pow(rt, 5/2));
-        
+
         // Calculate current practical salinity
-        curSalinity = a0 + a1 * Math.pow(rt, 1/2) + a2 * rt 
-            + a3 * Math.pow(rt, 3/2) + a4 * Math.pow(rt, 2) 
+        curSalinity = a0 + a1 * Math.pow(rt, 1/2) + a2 * rt
+            + a3 * Math.pow(rt, 3/2) + a4 * Math.pow(rt, 2)
             + a5 * Math.pow(rt, 5/2) + deltaS;
-        
+
         /*   Holy crap, man.  */
-        
+
         console.addLine("PRACTICAL SALINITY SET TO " + curSalinity);
     }
     //-[END METHOD calculatePracticalSalinity]----------------------------------
-    
+
     //-[BEGIN METHOD evaluateConditions]----------------------------------------
     private void evaluateConditions()
     {
@@ -166,7 +169,7 @@ public class PrimaryFrame extends JFrame
             setConditionStatus("Current system conditions are normal.", false);
     }
     //-[END METHOD evaluateConditions]------------------------------------------
-    
+
     //-[BEGIN METHOD handleAdjustConductivityClicked]---------------------------
     public void handleAdjustConductivityClicked()
     {
@@ -175,56 +178,56 @@ public class PrimaryFrame extends JFrame
         thread.  Note that this method works because the dialog created here
         gets GC'ed when it leaves this scope, so when this method gets called
         again, we're constructing a brand-new dialog each time.  */
-        
+
         dialog = new FOShSalinityModule.AdjustmentDialog(this, curConductivity);
         setConductivityManually(dialog.getSetValue());
     }
     //-[END METHOD handleAdjustConductivityClicked]-----------------------------
-    
+
     //-[BEGIN METHOD readConductivityProbe]-------------------------------------
     private void readConductivityProbe()
     {
         // Candy for the console
         console.addLine("Reading conductivity probe...");
-        
+
         int min = 53060 - RANDOM_LIMIT;
         int max = 53060 + RANDOM_LIMIT;
         setConductivity(new Random().nextInt((max - min) + 1) + min);
     }
     //-[END METHOD readConductivityProbe]---------------------------------------
-    
+
     //-[BEGIN METHOD requestConductivityLimits]---------------------------------
     private void requestConductivityLimits()
     {
         // Candy for the console
         console.addLine("Requesting conductivity limits...");
-        
+
         // TODO: Add network support here, these are just test values
         minConductivity = 51700;
         maxConductivity = 54400;
-        
+
         // More candy
         console.addLine("CONDUCTIVITY LOWER LIMIT SET TO " + minConductivity);
         console.addLine("CONDUCTIVITY UPPER LIMIT SET TO " + maxConductivity);
     }
     //-[END METHOD requestConductivityLimits]-----------------------------------
-    
+
     //-[BEGIN METHOD requestTemperature]----------------------------------------
     private void requestTemperature()
     {
         // Candy
         console.addLine("Requesting temperature...");
-        
+
         //TODO:  flesh this out with network support
         setTemperature(25);
     }
     //-[END METHOD requestTemperature]------------------------------------------
-    
+
     //-[BEGIN METHOD setConditionStatusMessage]---------------------------------
     public void setConditionStatusMessage(String s)
     { conditionLabel.setText(s); }
     //-[END METHOD setConditionStatusMessage]-----------------------------------
-    
+
     //-[BEGIN METHOD setConditionStatus]----------------------------------------
     private void setConditionStatus(String s, boolean abnormal)
     {
@@ -235,7 +238,7 @@ public class PrimaryFrame extends JFrame
             conditionLabel.setIcon(iconGreen);
     }
     //-[END METHOD setConditionStatus]------------------------------------------
-    
+
     //-[BEGIN METHOD setConductivity]-------------------------------------------
     private void setConductivity(int c)
     {
@@ -244,14 +247,14 @@ public class PrimaryFrame extends JFrame
             console.addLine("SET CONDUCTIVITY:  NO CHANGE");
         else
             console.addLine("SET CONDUCTIVITY:  FROM " + curConductivity + " TO " + c);
-        
+
         curConductivity = c;
         calculatePracticalSalinity();
         evaluateConditions();
         updateLabels();
     }
     //-[END METHOD setConductivity]---------------------------------------------
-    
+
     //-[BEGIN METHOD setConductivityManually]-----------------------------------
     private void setConductivityManually(int c)
     {
@@ -260,32 +263,32 @@ public class PrimaryFrame extends JFrame
             console.addLine("MANUAL SET CONDUCTIVITY:  NO CHANGE");
         else
             console.addLine("MANUAL SET CONDUCTIVITY:  FROM " + curConductivity + " TO " + c);
-        
+
         curConductivity = c;
         calculatePracticalSalinity();
         evaluateConditions();
         updateLabels();
     }
     //-[END METHOD setConductivityManually]-------------------------------------
-    
+
     //-[BEGIN METHOD setTemperature]--------------------------------------------
     private void setTemperature(int t)
     {
         /*  This is nothing but an internal convenience method that sets both
         the real value, and the label text so that it can all be done in one
         step.  */
-        
+
         // Not important, just candy for the console
         if(curTemperature == t)
             console.addLine("SET TEMPERATURE:  NO CHANGE");
         else
             console.addLine("SET TEMPERATURE:  FROM " + curTemperature + " TO " + t);
-        
+
         curTemperature = t;
         updateLabels();
     }
     //-[END METHOD setTemperature]----------------------------------------------
-    
+
     //-[BEGIN METHOD setupFrame]------------------------------------------------
     private void setupFrame()
     {
@@ -297,16 +300,16 @@ public class PrimaryFrame extends JFrame
         setVisible(true);
     }
     //-[END METHOD setupFrame]--------------------------------------------------
-    
+
     //-[BEGIN METHOD setupGUI]--------------------------------------------------
     private void setupGUI()
     {
         /*  Handwritten GUI code, in genral, is difficult to read unless copious
-        amounts of whitespace is added to spread individual elements out, and 
-        unconventional line-lengths are used.  In the interest of not having a 
-        GUI function that's eight-thousand lines long, these methods are not 
+        amounts of whitespace is added to spread individual elements out, and
+        unconventional line-lengths are used.  In the interest of not having a
+        GUI function that's eight-thousand lines long, these methods are not
         used here; and this code is, consequently, hard to read.  */
-        
+
         // Setup/configure data members
         iconGreen = new ImageIcon("src/Images/icon-green.png");
         iconRed = new ImageIcon("src/Images/icon-red.png");
@@ -317,7 +320,7 @@ public class PrimaryFrame extends JFrame
         temperatureLabel = new JLabel();
         salinityLabel = new JLabel();
         timerLabel = new JLabel("60s");
-        
+
 //<editor-fold defaultstate="collapsed" desc="Top Panel Code">
         // Setup/configure/add top panel
         JLabel conductivityLabelHeaderT = new JLabel("Conductivity:");
@@ -335,10 +338,10 @@ public class PrimaryFrame extends JFrame
                 BorderFactory.createLineBorder(Color.GRAY), "Probe Data"));
             topPanel.add(topSubPanel1);
             topPanel.add(topSubPanel2);
-            
+
         add(topPanel, BorderLayout.NORTH);
 //</editor-fold>
-            
+
 //<editor-fold defaultstate="collapsed" desc="Center Panel Code">
         // Setup/configure/add center panel
         JLabel conductivityLabelHeaderC = new JLabel("Current System Conductivity:");
@@ -377,10 +380,10 @@ public class PrimaryFrame extends JFrame
         JPanel centerPanel = new JPanel(new GridLayout(2, 1));
             centerPanel.add(centerSubPanel1);
             centerPanel.add(centerSubPanel2);
-        
+
         add(centerPanel, BorderLayout.CENTER);
 //</editor-fold>
-        
+
 //<editor-fold defaultstate="collapsed" desc="Bottom Panel Code">
         // Setup/configure/add bottom panel
         JButton exitButton = new JButton("Close Module");
@@ -395,13 +398,13 @@ public class PrimaryFrame extends JFrame
         bottomPanel.add(bottomSubPanel2);
         add(bottomPanel, BorderLayout.SOUTH);
 //</editor-fold>
-        
+
         // Final businesses
         getRootPane().setDefaultButton(exitButton);
         exitButton.requestFocus();
     }
     //-[END METHOD setupGUI]----------------------------------------------------
-    
+
     //-[BEGIN METHOD setupTimer]------------------------------------------------
     private void setupTimer()
     {
@@ -412,7 +415,7 @@ public class PrimaryFrame extends JFrame
             timer.start();
     }
     //-[END METHOD setupTimer]--------------------------------------------------
-    
+
     //-[BEGIN METHOD updateLabels]----------------------------------------------
     private void updateLabels()
     {

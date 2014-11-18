@@ -5,21 +5,21 @@ import java.lang.*;
 import java.util.*;
 import javax.swing.*;
 
-public class PHCTOS
+public class TEMPCTOS
                 implements Runnable
 {
   Talker  talker;
-  PHFrame pf;
+  TEMPFrame tf;
   String  msg;// Must be placed here to pass to chat client, other wise must be effectivly final.
   String[] splitString;// see above.
   String id;
 //====================================================================================================================
-  public PHCTOS(String serverName,int port,String id, PHFrame pf)
+  public TEMPCTOS(String serverName,int port,String id, TEMPFrame tf)
   {   try
       {
         this.id = id;
         talker  = new Talker(serverName,port,id);
-        this.pf = pf;
+        this.tf = tf;
         new Thread(this).start();
       }
       catch(IOException ioe)
@@ -55,18 +55,19 @@ public class PHCTOS
            msg = talker.recieve();
            if(msg.startsWith("+WHORU"))
            {
-             this.sendMessage("+IAMA PH_MOD");
+             this.sendMessage("+IAMA TEMP_MOD");
            }
            else if(msg.startsWith("+CONNECTED"))
            {
-            pf.connected();
+            tf.connected();
            }
            else if(msg.startsWith("+MINMAX"))
            {
               splitString = msg.toString().split(" ");
               System.out.println("splitString[1]: "+splitString[1]);
               System.out.println("splitString[1]: "+splitString[2]);
-              pf.setMinMax(splitString[1],splitString[2]);
+              tf.setMinMax(splitString[1],splitString[2]);
+
            }
         }
         talker.close();// CLOSES CONNECTION TO TALKER IF  NOT CONNECTED!!
@@ -74,7 +75,7 @@ public class PHCTOS
       catch(IOException ioe)
       {
          connected = false;
-         System.out.println("Error connecting to OS from the PHCTOS of this MOD, the connection was established but might have timed out!");
+         System.out.println("Error connecting to OS from the TEMPCTOS of this MOD, the connection was established but might have timed out!");
          JOptionPane.showMessageDialog(null, "Connection timed out", "Connection to the OS module has been lost, the program will now close. Please relaunch to start again!", JOptionPane.ERROR_MESSAGE);
          System.out.println("");
          ioe.printStackTrace();

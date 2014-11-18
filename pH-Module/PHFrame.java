@@ -13,6 +13,17 @@ import java.lang.*;
 public class PHFrame extends JFrame
                           implements ActionListener
 {
+
+
+    public static void main(String[] args)
+    {
+        new PHFrame();
+    }// end of main main of the main
+
+
+
+    private PHCTOS               ctos;
+
     private DCRSimpleTextConsole console;
     private ImageIcon            iconGreen;
     private ImageIcon            iconRed;
@@ -23,6 +34,7 @@ public class PHFrame extends JFrame
     public double                minpH;
     public double                maxpH;
     public double                currentpH;
+
 
     PHFrame()
     {
@@ -35,7 +47,7 @@ public class PHFrame extends JFrame
         maxpH                         = 7.5;
         currentpH                     = 7.00;
 
-        conditionLabelPH              = new JLabel(iconGreen);
+        conditionLabelPH              = new JLabel(iconRed);
         phLabel                       = new JLabel(Double.toString(currentpH));
         console.addLine("pH range auto-set to 6.50 - 7.50");
 
@@ -46,7 +58,7 @@ public class PHFrame extends JFrame
         pollTimer.setRepeats(true);
 
         JButton incButton             = new JButton("pH + 0.5");
-        JButton decButton             = new JButton("pH - 0.5");        
+        JButton decButton             = new JButton("pH - 0.5");
         JButton adjustButton          = new JButton("Manually Set Range");
         JButton exitButton            = new JButton("Close");
 
@@ -55,7 +67,7 @@ public class PHFrame extends JFrame
         JPanel  topPanel              = new JPanel(new GridLayout(1, 2));
 
         JPanel  centerSubPanel1       = new JPanel();
-        JPanel  centerSubPanel1a     = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel  centerSubPanel1a      = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JPanel  centerSubPanel2       = new JPanel(new GridLayout(1, 1));
         JPanel  centerPanel           = new JPanel(new GridLayout(2, 1));
@@ -121,14 +133,38 @@ public class PHFrame extends JFrame
         this.setupFrame();
         pollTimer.start();
 
+         ctos = new PHCTOS("127.0.0.1",12345,"PH_Mod",this);
+
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
+
+
+
+    void connected()
+    {
+       conditionLabelPH.setIcon(iconGreen);
+       this.repaint();
+       console.addLine("Connected to OS module.");
+    }
+
+    void setMinMax(String min,String max)
+    {
+      console.addLine("New Min and Max ph set! They are: Min:"+min+" Max:"+max);
+      maxpH = Double.parseDouble(max);
+      minpH = Double.parseDouble(min);
+    }
+
+
+
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String cmdBuffer = e.getActionCommand();
-        
-        
+
+
         if(cmdBuffer.equals("CMD_EXIT"))
             System.exit(1);
 
@@ -208,6 +244,8 @@ public class PHFrame extends JFrame
         currentpH = currentpH/100;
 
         console.addLine("pH is " + currentpH);
+        ctos.sendMessage("+UPPH "+currentpH);
+
         phLabel.setText(Double.toString(currentpH));
 
         if(currentpH < minpH || currentpH > maxpH)
@@ -280,8 +318,8 @@ public class PHFrame extends JFrame
                 autoAdjust();
                 return;
             }
-    
+
         }
 
-    }    
+    }
 }//end of class

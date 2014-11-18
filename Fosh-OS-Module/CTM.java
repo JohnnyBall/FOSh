@@ -81,10 +81,20 @@ public class CTM
             server.connectPH(this);
           }
         }//END OF IAMA check
-        else if(msg.startsWith("+UPTEMP "))
+        else if(msg.startsWith("+UPTEMP "))//makes a call to update the TEMP on the OS interface
         {
           splitString = msg.toString().split(" ");
           server.updateTemp(splitString[1]);
+        }
+        else if(msg.startsWith("+UPPH "))//makes a call to update the PH on the OS interface
+        {
+          splitString = msg.toString().split(" ");
+          server.updatePH(splitString[1]);
+        }
+        else if(msg.startsWith("+UPSAL"))//makes a call to update the SAL on the OS interface
+        {
+          splitString = msg.toString().split(" ");
+          server.updateSAL(splitString[1]);
         }
 
       }//end of try
