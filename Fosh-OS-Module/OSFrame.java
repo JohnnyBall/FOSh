@@ -213,11 +213,9 @@ public class OSFrame extends JFrame
        console.addLine("Salinity module connected.");
        this.repaint();
        salCTM.sendMessage("+CONNECTED");
-       phCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
+       salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
        if(tempCTM!=null)
-         tempCTM.sendMessage("TEMP+ "+temperatureLabel.getText());
-
-       salCTM.sendMessage("+REQ_SAL");
+         salCTM.sendMessage("TEMP+ "+temperatureLabel.getText());
     }
 
     void connectPH(CTM temperaryCTM)
@@ -228,7 +226,6 @@ public class OSFrame extends JFrame
        this.repaint();
        phCTM.sendMessage("+CONNECTED");
        phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
-       phCTM.sendMessage("+REQ_PH");
     }
 
     void disconnectMod(String id)
@@ -252,7 +249,6 @@ public class OSFrame extends JFrame
           console.addLine("PH module disconnected.");
           tempCTM = null;
         }
-
     }
 
     void updateTemp(String temp)
@@ -271,8 +267,6 @@ public class OSFrame extends JFrame
         salinityLabel.setText(df.format(Double.parseDouble(sal)));
     }
 
-
-
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -286,7 +280,7 @@ public class OSFrame extends JFrame
                 selectedBiome = freshWater.elementAt(0);
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
                 if(tempCTM != null)
-                  tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
+                    tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
                 if(salCTM != null)
@@ -298,9 +292,9 @@ public class OSFrame extends JFrame
                 console.addLine("Switched Biome to " +selectedBiome.biomeName);
                 if(tempCTM != null)
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
-                 if(phCTM != null)
+                if(phCTM != null)
                     phCTM.sendMessage("+MINMAX "+selectedBiome.fishPHMin+" "+selectedBiome.fishPHMax);
-                 if(salCTM != null)
+                if(salCTM != null)
                     salCTM.sendMessage("+MINMAX "+selectedBiome.fishSaltMin+" "+selectedBiome.fishSaltMax);
 
                 break;
@@ -331,14 +325,6 @@ public class OSFrame extends JFrame
                 throw new UnsupportedOperationException("actionPerformed() in PrimaryFrame encountered an unrecognized Action Command.");
         }
     }//-[END METHOD actionPerformed]---------------------------------------------
-
-
-
-
-
-
-
-
 
 
     private void setupFrame()

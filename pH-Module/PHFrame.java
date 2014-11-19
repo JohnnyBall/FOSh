@@ -138,7 +138,6 @@ public class PHFrame extends JFrame
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
 
 
-
     void connected()
     {
        conditionLabelPH.setIcon(iconGreen);
@@ -152,11 +151,6 @@ public class PHFrame extends JFrame
       maxpH = Double.parseDouble(max);
       minpH = Double.parseDouble(min);
     }
-
-
-
-
-
 
 
     @Override

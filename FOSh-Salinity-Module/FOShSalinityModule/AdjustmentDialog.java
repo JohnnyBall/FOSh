@@ -6,7 +6,7 @@
    PURPOSE:                   Modal dialog for changing conductivity manually
    VERSION:                   20141004-0027
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡*/
-package FOShSalinityModule;
+//package FOShSalinityModule;
 
 //=[BEGIN IMPORTS]==============================================================
 import java.awt.BorderLayout;
@@ -122,7 +122,7 @@ implements ActionListener
     {
         conductivityTF = new JTextField();
             conductivityTF.setInputVerifier(
-                new FOShSalinityModule.ConductivityInputVerifier());
+                new ConductivityInputVerifier());
             conductivityTF.setText("" + defaultValue);
             conductivityTF.setPreferredSize(new Dimension(128, 18));
         JLabel conductivityLabel = new JLabel(" μS/cm");

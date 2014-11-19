@@ -21,7 +21,7 @@ public class TEMPFrame extends JFrame
     private DCRSimpleTextConsole console;
     private ImageIcon            iconGreen;
     private ImageIcon            iconRed;
-    private JLabel               conditionLabeltemperature;
+    private JLabel               conditionLabeltemperatu2re;
     private JLabel               temperatureLabel;
 
     public  Double               randomNum;
@@ -45,7 +45,7 @@ public class TEMPFrame extends JFrame
         tempMax                       = new Double(80);
         tempMin                       = new Double(70);
         ran                           = new Random(1645);
-        randomGen                     = new Timer(10000, this);
+        randomGen                     = new Timer(4000, this);
 
         temperatureLabel              = new JLabel(Double.toString(randomNum));
 

@@ -6,8 +6,6 @@
    PURPOSE:                   Main GUI Frame
    VERSION:                   20141006-1140
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡*/
-package FOShSalinityModule;
-
 //=[BEGIN IMPORTS]==============================================================
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,13 +34,13 @@ public class PrimaryFrame extends JFrame
     //-[BEGIN MEMBER DATA]------------------------------------------------------
     private static final int RANDOM_LIMIT = 1000;
 
-    private FOShSalinityModule.DCRSimpleTextConsole     console;
-    private FOShSalinityModule.AdjustmentDialog         dialog;
+    private DCRSimpleTextConsole       console;
+    private AdjustmentDialog           dialog;
 
     private double                      curSalinity;
     private ImageIcon                   iconGreen;
     private ImageIcon                   iconRed;
-    private FOShSalinityModule.SALCTOS  ctos;
+    private SALCTOS                     ctos;
 
     private int                         curConductivity;
 
@@ -63,8 +61,8 @@ public class PrimaryFrame extends JFrame
     //-[BEGIN CONSTRUCTOR(S)]---------------------------------------------------
     PrimaryFrame()
     {
-        console = new FOShSalinityModule.DCRSimpleTextConsole(
-            FOShSalinityModule.DCRSimpleTextConsole.INS_BEG);
+        console = new DCRSimpleTextConsole(DCRSimpleTextConsole.INS_BEG);
+        ctos = new SALCTOS("127.0.0.1",12345,"Temp_Mod",this);
 
         setupGUI();
         setupFrame();
@@ -73,7 +71,6 @@ public class PrimaryFrame extends JFrame
         readConductivityProbe();
         updateLabels();
         setupTimer();
-        ctos = new SALCTOS("127.0.0.1",12345,"Temp_Mod",this);
     }
     //-[END CONSTRUCTOR(S)]-----------------------------------------------------
 
@@ -196,7 +193,7 @@ public class PrimaryFrame extends JFrame
         gets GC'ed when it leaves this scope, so when this method gets called
         again, we're constructing a brand-new dialog each time.  */
 
-        dialog = new FOShSalinityModule.AdjustmentDialog(this, curConductivity);
+        dialog = new AdjustmentDialog(this, curConductivity);
         setConductivityManually(dialog.getSetValue());
     }
     //-[END METHOD handleAdjustConductivityClicked]-----------------------------
@@ -403,7 +400,7 @@ public class PrimaryFrame extends JFrame
 
 //<editor-fold defaultstate="collapsed" desc="Bottom Panel Code">
         // Setup/configure/add bottom panel
-        JButton exitButton = new JButton("Close Module");
+        JButton exitButton = new JButton("Close");
         exitButton.setActionCommand("CMD_EXIT");
         exitButton.addActionListener(this);
         JPanel bottomSubPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));

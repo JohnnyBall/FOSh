@@ -6,7 +6,7 @@
    PURPOSE:                   A plain text console for output, whatever.
    VERSION:                   20141002-2345
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡*/
-package FOShSalinityModule; //Added 2014-10-02 for compatibility -DCR
+//package FOShSalinityModule; //Added 2014-10-02 for compatibility -DCR
 
 /*  2014-10-02:  Changed a few things with Date and SimpleDateFormat to bring 
 the class more "up to date," fingerquotes.  */

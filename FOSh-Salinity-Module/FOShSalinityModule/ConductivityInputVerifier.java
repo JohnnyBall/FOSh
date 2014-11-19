@@ -6,7 +6,7 @@
    PURPOSE:                   Input verifier for manual probe input
    VERSION:                   20141002-1839
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡*/
-package FOShSalinityModule;
+//package FOShSalinityModule;
 
 //=[BEGIN IMPORTS]==============================================================
 import java.awt.Color;
