@@ -266,6 +266,17 @@ public class OSFrame extends JFrame
         System.out.println("sal: "+sal);
         salinityLabel.setText(df.format(Double.parseDouble(sal)));
     }
+    void outputNewData()
+    {
+
+        console.addLine("New Maximum Temperature: " +selectedBiome.fishTempMax);
+        console.addLine("New Minimum Temperature: " +selectedBiome.fishTempMax);
+        console.addLine("New Maximum Salinity: " +selectedBiome.fishTempMax);
+        console.addLine("New Minimum Salinity: " +selectedBiome.fishTempMax);
+        console.addLine("New Maximum PH: " +selectedBiome.fishTempMax);
+        console.addLine("New Minimum PH: " +selectedBiome.fishTempMax);
+        console.addLine("Switched Biome to " +selectedBiome.biomeName);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -278,7 +289,7 @@ public class OSFrame extends JFrame
                 System.exit(1);
             case "Fresh_0":
                 selectedBiome = freshWater.elementAt(0);
-                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                outputNewData();
                 if(tempCTM != null)
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
@@ -289,7 +300,7 @@ public class OSFrame extends JFrame
                 break;
             case "Fresh_1":
                 selectedBiome = freshWater.elementAt(0);
-                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                outputNewData();
                 if(tempCTM != null)
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
@@ -300,7 +311,7 @@ public class OSFrame extends JFrame
                 break;
             case "Salt_0":
                 selectedBiome = saltWater.elementAt(0);
-                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                outputNewData();
                 if(tempCTM != null)
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
@@ -311,7 +322,7 @@ public class OSFrame extends JFrame
                 break;
             case "Salt_1":
                 selectedBiome = saltWater.elementAt(1);
-                console.addLine("Switched Biome to " +selectedBiome.biomeName);
+                outputNewData();
                 if(tempCTM != null)
                     tempCTM.sendMessage("+MINMAX "+selectedBiome.fishTempMin+" "+selectedBiome.fishTempMax);
                 if(phCTM != null)
