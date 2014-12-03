@@ -434,7 +434,7 @@ public class PrimaryFrame extends JFrame
     private void updateLabels()
     {
         NumberFormat nf = NumberFormat.getIntegerInstance();
-        ctos.sendMessage("+UPSAL "+curConductivity);
+        ctos.sendMessage("+UPSAL "+curSalinity);
         conductivityLabelT.setText(nf.format(curConductivity) + " μS/cm");
         conductivityLabelC.setText(nf.format(curConductivity) + " μS/cm");
         temperatureLabel.setText(nf.format(curTemperature) + "° C");

@@ -21,7 +21,7 @@ public class TEMPFrame extends JFrame
     private DCRSimpleTextConsole console;
     private ImageIcon            iconGreen;
     private ImageIcon            iconRed;
-    private JLabel               conditionLabeltemperatu2re;
+    private JLabel               conditionLabeltemperature;
     private JLabel               temperatureLabel;
 
     public  Double               randomNum;
