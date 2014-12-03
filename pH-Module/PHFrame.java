@@ -14,7 +14,6 @@ public class PHFrame extends JFrame
                           implements ActionListener
 {
 
-
     public static void main(String[] args)
     {
         new PHFrame();
@@ -24,17 +23,17 @@ public class PHFrame extends JFrame
 
     private PHCTOS               ctos;
 
-    private DCRSimpleTextConsole console;
+    public DCRSimpleTextConsole  console;
     private ImageIcon            iconGreen;
     private ImageIcon            iconRed;
     private JLabel               conditionLabelPH;
     private JLabel               phLabel;
-    private Timer                pollTimer;
     private java.util.Random     rng;
     public double                minpH;
     public double                maxpH;
     public double                currentpH;
-
+    public PHThread              pHRunnable;
+    public Thread                moduleThread;
 
     PHFrame()
     {
@@ -47,27 +46,24 @@ public class PHFrame extends JFrame
         maxpH                         = 7.5;
         currentpH                     = 7.00;
 
-        conditionLabelPH              = new JLabel(iconRed);
+        conditionLabelPH              = new JLabel(iconGreen);
         phLabel                       = new JLabel(Double.toString(currentpH));
         console.addLine("pH range auto-set to 6.50 - 7.50");
 
         rng                           = new java.util.Random(System.currentTimeMillis());
 
-        pollTimer                     = new Timer(2000, this);
-        pollTimer.setActionCommand("CMD_POLL");
-        pollTimer.setRepeats(true);
 
         JButton incButton             = new JButton("pH + 0.5");
-        JButton decButton             = new JButton("pH - 0.5");
+        JButton decButton             = new JButton("pH - 0.5");        
         JButton adjustButton          = new JButton("Manually Set Range");
         JButton exitButton            = new JButton("Close");
 
-        JPanel  topSubPanel1          = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel  topSubPanel2          = new JPanel(new FlowLayout());
-        JPanel  topPanel              = new JPanel(new GridLayout(1, 2));
+        //JPanel  topSubPanel1          = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        //JPanel  topSubPanel2          = new JPanel(new FlowLayout());
+        //JPanel  topPanel              = new JPanel(new GridLayout(1, 2));
 
         JPanel  centerSubPanel1       = new JPanel();
-        JPanel  centerSubPanel1a      = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel  centerSubPanel1a     = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JPanel  centerSubPanel2       = new JPanel(new GridLayout(1, 1));
         JPanel  centerPanel           = new JPanel(new GridLayout(2, 1));
@@ -83,22 +79,22 @@ public class PHFrame extends JFrame
         phLabelHeader.setFont(new Font("Arial", Font.BOLD, 72));
         phLabel.setFont(new Font("Arial", Font.BOLD, 72));
 
-        incButton.setActionCommand("CMD_INC");
-        incButton.addActionListener(this);
+        //incButton.setActionCommand("CMD_INC");
+        //incButton.addActionListener(this);
 
-        decButton.setActionCommand("CMD_DEC");
-        decButton.addActionListener(this);
+        //decButton.setActionCommand("CMD_DEC");
+        //decButton.addActionListener(this);
 
-        adjustButton.setActionCommand("CMD_ADJUST");
-        adjustButton.addActionListener(this);
+        //adjustButton.setActionCommand("CMD_ADJUST");
+        //adjustButton.addActionListener(this);
 
-        topSubPanel2.add(incButton);
-        topSubPanel2.add(decButton);
-        topSubPanel2.add(adjustButton);
-        topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Adjustments"));
-        topPanel.add(topSubPanel2);
+        //topSubPanel2.add(incButton);
+        //topSubPanel2.add(decButton);
+        //topSubPanel2.add(adjustButton);
+        //topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Adjustments"));
+        //topPanel.add(topSubPanel2);
 
-        this.add(topPanel, BorderLayout.NORTH);
+        //this.add(topPanel, BorderLayout.NORTH);
 
         centerSubPanel1a.add(phLabelHeader);
         centerSubPanel1a.add(phLabel);
@@ -131,12 +127,15 @@ public class PHFrame extends JFrame
         getRootPane().setDefaultButton(exitButton);
         exitButton.requestFocus();
         this.setupFrame();
-        pollTimer.start();
 
-         ctos = new PHCTOS("127.0.0.1",12345,"PH_Mod",this);
+        ctos = new PHCTOS("127.0.0.1", 12345, "PH_Mod", this);
+
+        pHRunnable = new PHThread(this);
+        moduleThread = new Thread(pHRunnable);
+        moduleThread.start();
+
 
     }//-[END CONSTRUCTOR(S)]----------------------------------------------------
-
 
     void connected()
     {
@@ -153,22 +152,25 @@ public class PHFrame extends JFrame
     }
 
 
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
         String cmdBuffer = e.getActionCommand();
-
-
+        
+        
         if(cmdBuffer.equals("CMD_EXIT"))
             System.exit(1);
+
+/*  These were initially used for bug checking the module.  Left them in just in case
+    further checking were needed.  Same is true for the buttons and the panels that were 
+    commented out up above.
 
         else if(cmdBuffer.equals("CMD_ADJUST"))
         {
             console.addLine("Adjusting range...");
-            pollTimer.stop();
             new RangeDialog(this);
             console.addLine("Range now set to " + minpH + " - " + maxpH);
-            pollTimer.start();
 
         }
 
@@ -197,12 +199,7 @@ public class PHFrame extends JFrame
 
             phLabel.setText(Double.toString(currentpH));
         }
-
-        else if(cmdBuffer.equals("CMD_POLL"))
-        {
-            console.addLine("Polling the pH probe...");
-            pollPH();
-        }
+*/
     }//-[END METHOD actionPerformed]---------------------------------------------
 
     private void setupFrame()
@@ -216,55 +213,50 @@ public class PHFrame extends JFrame
     }//-[END METHOD setupFrame]--------------------------------------------------
 
 
-    private void pollPH()
+    public void pollPH()
     {
+        console.addLine("Polling the pH probe...");
         if(rng.nextInt(2) == 1)
         {
             currentpH += .01;
-
+            
             if(currentpH > 14)
                 currentpH = 14.00;
         }
-
+            
         else
         {
             currentpH -= .01;
-
+            
             if(currentpH < 0)
                 currentpH = 0.00;
         }
-
+            
         currentpH = Math.round(currentpH * 100);
         currentpH = currentpH/100;
-
+            
         console.addLine("pH is " + currentpH);
         ctos.sendMessage("+UPPH "+currentpH);
-
         phLabel.setText(Double.toString(currentpH));
-
+            
         if(currentpH < minpH || currentpH > maxpH)
         {
             conditionLabelPH.setIcon(iconRed);
             console.addLine("pH is no longer within limits.  Begin auto-adjust...");
-            pollTimer.stop();
-
+            
             try
             {
                 autoAdjust();
                 conditionLabelPH.setIcon(iconGreen);
                 console.addLine("Auto-adjust complete. pH is " + currentpH);
-                pollTimer.start();
             }
-
+            
             catch(InterruptedException ie)
             {
                 console.addLine("Error encountered during auto-adjust. pH Module offline. Please Reset...");
             }
-
-
         }
         return;
-
     }//-[END of pollPH()]----------------------------------------------------------------
 
     private void autoAdjust() throws InterruptedException
@@ -273,47 +265,38 @@ public class PHFrame extends JFrame
 
         if(currentpH > prefPH)
         {
-            currentpH -= 0.2;
-
-            currentpH = Math.round(currentpH * 100);
-            currentpH = currentpH/100;
-
-            console.addLine("pH is " + currentpH);
-            phLabel.setText(Double.toString(currentpH));
-
-            if(currentpH <= prefPH + 0.1)
-                return;
-
-            else
+            while(currentpH > prefPH + 0.1)
             {
+                currentpH -= 0.2;
+
+                currentpH = Math.round(currentpH * 100);
+                currentpH = currentpH/100;
+
+                console.addLine("pH is " + currentpH);
+                ctos.sendMessage("+UPPH "+currentpH);
+                phLabel.setText(Double.toString(currentpH));
 
                 Thread.sleep(2000);
-                autoAdjust();
-                return;
             }
         }
 
         else
         {
-            currentpH += 0.2;
-
-            currentpH = Math.round(currentpH * 100);
-            currentpH = currentpH/100;
-
-            console.addLine("pH is " + currentpH);
-            phLabel.setText(Double.toString(currentpH));
-
-            if(currentpH >= prefPH - 0.1)
-                return;
-
-            else
+            while(currentpH < prefPH - 0.1)
             {
-                Thread.sleep(2000);
-                autoAdjust();
-                return;
-            }
+                currentpH += 0.2;
 
+                currentpH = Math.round(currentpH * 100);
+                currentpH = currentpH/100;
+
+                console.addLine("pH is " + currentpH);
+                ctos.sendMessage("+UPPH "+currentpH);
+                phLabel.setText(Double.toString(currentpH));
+
+                Thread.sleep(2000);
+            }
+    
         }
 
-    }
+    }    
 }//end of class
