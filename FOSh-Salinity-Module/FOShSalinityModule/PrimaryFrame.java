@@ -118,6 +118,9 @@ public class PrimaryFrame extends JFrame
     //-[BEGIN METHOD calculatePracticalSalinity]--------------------------------
     private void calculatePracticalSalinity()
     {
+       // RUSTY BAND-AID, converts temp into C first
+       double temperature = ((curTemperature - 32)*5)/9;
+       
         // Candy
         console.addLine("Calculating practical salinity...");
 
@@ -146,14 +149,14 @@ public class PrimaryFrame extends JFrame
         double c3 = 29035.1640851;
 
         // Calculate conductivity C(KCL soln. @ curTemperature)
-        ckcl = c0 * Math.pow(curTemperature, 3)
-            + c1 * Math.pow(curTemperature, 2) + c2 * curTemperature + c3;
+        ckcl = c0 * Math.pow(temperature, 3)
+            + c1 * Math.pow(temperature, 2) + c2 * temperature + c3;
 
         // Calculate conductivity ratio
         rt = curConductivity / ckcl;
 
         // Calculate deltaS
-        deltaS = ((curTemperature - 15) / (1 + 0.0162 * (curTemperature - 15)))
+        deltaS = ((temperature - 15) / (1 + 0.0162 * (temperature - 15)))
             * (b0 + b1 * Math.pow(rt, 1/2) + b2 * rt + b3 * Math.pow(rt, 3/2)
             + b4 * Math.pow(rt, 2) + b5 * Math.pow(rt, 5/2));
 
@@ -435,9 +438,9 @@ public class PrimaryFrame extends JFrame
     {
         NumberFormat nf = NumberFormat.getIntegerInstance();
         ctos.sendMessage("+UPSAL "+curSalinity);
-        conductivityLabelT.setText(nf.format(curConductivity) + " μS/cm");
-        conductivityLabelC.setText(nf.format(curConductivity) + " μS/cm");
-        temperatureLabel.setText(nf.format(curTemperature) + "° C");
+        conductivityLabelT.setText(nf.format(curConductivity) + " \u03bcS/cm");
+        conductivityLabelC.setText(nf.format(curConductivity) + " \u03bcS/cm");
+        temperatureLabel.setText(nf.format(curTemperature) + "\u2103");
         salinityLabel.setText(nf.format(curSalinity) + "");
     }
     //-[END METHOD updateLabels]------------------------------------------------
