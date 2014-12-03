@@ -270,11 +270,11 @@ public class OSFrame extends JFrame
     {
 
         console.addLine("New Maximum Temperature: " +selectedBiome.fishTempMax);
-        console.addLine("New Minimum Temperature: " +selectedBiome.fishTempMax);
-        console.addLine("New Maximum Salinity: " +selectedBiome.fishTempMax);
-        console.addLine("New Minimum Salinity: " +selectedBiome.fishTempMax);
-        console.addLine("New Maximum PH: " +selectedBiome.fishTempMax);
-        console.addLine("New Minimum PH: " +selectedBiome.fishTempMax);
+        console.addLine("New Minimum Temperature: " +selectedBiome.fishTempMin);
+        console.addLine("New Maximum Salinity: " +selectedBiome.fishSaltMax);
+        console.addLine("New Minimum Salinity: " +selectedBiome.fishSaltMin);
+        console.addLine("New Maximum PH: " +selectedBiome.fishPHMax);
+        console.addLine("New Minimum PH: " +selectedBiome.fishPHMin);
         console.addLine("Switched Biome to " +selectedBiome.biomeName);
     }
 
